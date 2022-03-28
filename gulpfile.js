@@ -12,7 +12,7 @@ gulp.task("sass", function () {
 
 gulp.task("serve", ["sass"], function () {
   bs.init({
-    proxy: "https://www.agrolkortet.se/",
+    proxy: "https://www.google.se/",
     serveStatic: ["app/css"],
     files: "app/css/main.css",
     snippetOptions: {
