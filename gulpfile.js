@@ -10,30 +10,27 @@ gulp.task("sass", function () {
     .pipe(bs.stream());
 });
 
-gulp.task(
-  "serve",
-  gulp.parallel("sass", function () {
-    bs.init({
-      proxy: "https://www.agrolkortet.se/",
-      serveStatic: ["app/css"],
-      files: "app/css/main.css",
-      snippetOptions: {
-        rule: {
-          match: /<\/head>/i,
-          fn: function (snippet, match) {
-            return (
-              '<link rel="stylesheet" type="text/css" href="/main.css"/>' +
-              snippet +
-              match
-            );
-          },
+gulp.task("serve", ["sass"], function () {
+  bs.init({
+    proxy: "https://www.agrolkortet.se/",
+    serveStatic: ["app/css"],
+    files: "app/css/main.css",
+    snippetOptions: {
+      rule: {
+        match: /<\/head>/i,
+        fn: function (snippet, match) {
+          return (
+            '<link rel="stylesheet" type="text/css" href="/main.css"/>' +
+            snippet +
+            match
+          );
         },
       },
-    });
+    },
+  });
 
-    gulp.watch("src/scss/*.scss", gulp.parallel("sass"));
-    gulp.watch("src/*.html").on("change", bs.reload);
-  })
-);
+  gulp.watch("src/scss/*.scss", ["sass"]);
+  gulp.watch("src/*.html").on("change", bs.reload);
+});
 
-gulp.task("default", gulp.parallel("serve"));
+gulp.task("default", ["serve"]);
